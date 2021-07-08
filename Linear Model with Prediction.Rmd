@@ -1,0 +1,64 @@
+---
+title: "Linear Model with Prediction"
+author: "Destiny Calvillo"
+date: "7/6/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tigerstats)
+library(tidyverse)
+data <- read.csv(file="https://onlinestatbook.com/case_studies_rvls/physical_strength/data.txt",sep="",header=TRUE)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+###Plot scatterplot
+
+```{r}
+plot(SIMS~ARM,data=data)
+```
+
+##Now with ggplot - first select the basic data
+
+```{r}
+basicNN <- ggplot(data,aes(y=SIMS,x=ARM))
+```
+##Now add in scatterplot
+
+```{r}
+basicNN + geom_point()
+```
+
+The Y-axis is SIMS and the X-axis is ARM. This plot shows that there is a positive linear correlation. 
+
+# Numerical results
+
+```{r}
+cor(SIMS~ARM,data=data)
+```
+
+Above is the value of correlation, the value is 0.68. Since the value is a positive number, we should expect the sea of points to go uphill towards the right. We can also verify this in the scatter-plots from earlier. 
+
+# Inferential  (Build linear model)
+  
+```{r}
+model.1 <- lm(SIMS~ARM,data=data)
+summary.lm(model.1)
+```
+
+The equation for the line that fits this is SIMS= -4.1 + 0.05 * R. The formula needed is y= mx + b to create the corresponding line. The Adjusted R-squared is the number to look at. 
+
+# now add the model fit to our plot
+  
+```{r}
+basicNN + geom_point( ) + geom_smooth(method=lm)
+``` 
+
+It appears that the value of the Y-intercept would be around 1. 
